@@ -14,6 +14,14 @@ MongoClient.connect(
         writeConcern: {
             wtimeout: 3000
         },
-
     }
 )
+.catch(err => {
+    console.error(err)
+    process.exit(1)
+})
+.then(async client => {
+    app.listen(port, () => {
+        console.log(`listening on port ${port}`)
+    })
+})
