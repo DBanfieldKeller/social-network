@@ -1,25 +1,14 @@
-import express from "express";
-import { MongoClient } from "mongodb";
+import express from 'express';
+import cors from 'cors';
+// import routes file from routes
 
-const app = express()
-const PORT = process.env.PORT || 3001;
+const app = express();
 
-// Connection string to local instance of MongoDB including database name
-const connectionStringURI = `mongodb://127.0.0.1:27017/bleatrDB`;
+// apply middleware
+app.use(cors());
+app.use(express.json()); 
 
-let db;
+app.use('api/v1/bleats', bleats);
+app.use('*', (req, res) => res.status(404).json({error: "not found"}));
 
-MongoClient.connect(
-    // Defines connection between app and MongoDB instance
-    connectionStringURI,
-    // Sets connection string parser and Server Discover and Monitoring engine to true and avoids warning
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    (err, client) => {
-        // Use client.db() constructor to add new db instance
-        db = client.db();
-        app.listen(PORT, () => {
-            console.log(`API server running on port ${PORT}`);
-        });
-    }
-);
-
+export default app
